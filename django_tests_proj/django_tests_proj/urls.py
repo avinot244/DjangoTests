@@ -20,5 +20,5 @@ from data_analysis import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    re_path(r'^api/behaviorADC/$', views.behaviorADC_list)
+    re_path(r'^api/behavior/ADC/$', views.behaviorADC_list)
 ]
