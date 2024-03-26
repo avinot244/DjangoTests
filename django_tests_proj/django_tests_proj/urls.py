@@ -25,4 +25,5 @@ urlpatterns = [
     re_path(r'^api/behavior/ADC/patch/getList', views.get_listPatch),
     re_path(r'^api/behavior/ADC/latest/([0-9]*)$', views.behaviorADC_latest),
     re_path(r'^api/behavior/ADC/patch/update', views.behaviorADC_updatePatch),
+    path('api/behavior/ADC/stats/<str:summonnerName>', views.behaviorADC_stats)
 ]

@@ -1,0 +1,1 @@
+BEHAVIOR_ADC_HEADER = ["Date", "Tournament", "MatchId", "SeriesId", "Patch", "SummonnerName", "XPD@15", "GD@15", "CS/Min", "Kills", "Deaths", "Assists", "KP%", "Damage/Min", "JungleProximity", "botLanePresence", "riverBotPresence"]
