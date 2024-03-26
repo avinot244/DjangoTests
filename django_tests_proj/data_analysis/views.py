@@ -11,35 +11,6 @@ from .globals import BEHAVIOR_ADC_HEADER
 import os
 import pandas as pd
 
-@api_view(['GET'])
-def behaviorADC_list(request, limit: int) :
-    data = BehaviorADC.objects.all()[:int(limit)]
-    serializer = BehaviorADCSerializer(data, context={"request": request}, many=True)
-    return Response(serializer.data)
-
-@api_view(['GET'])
-def behaviorADC_patch(request, patch1, patch2):
-    
-    # use Entry.objects.get(patch__contains=patch1 + "." + patch2)
-    queryResult = BehaviorADC.objects.filter(patch__contains=patch1 + "." + patch2)
-    queryResult.order_by("-seriesId")
-    print(queryResult)
-
-    serializer = BehaviorADCSerializer(queryResult, context={"request": request}, many=True)
-
-    return Response(serializer.data)
-
-@api_view(['GET'])
-def get_listPatch(request):
-    queryResult = BehaviorADC.objects.all()
-    patchList : list = list()
-
-    for res in queryResult:
-        patch = res.patch.split(".")[0] + "." + res.patch.split(".")[1]
-        patchList.append(patch)
-    df = pd.DataFrame({"patch": patchList})
-
-    return Response(df["patch"].unique())
 
 @api_view(['GET'])
 def behaviorADC_latest(request, limit : str):
@@ -83,12 +54,56 @@ def behaviorADC_stats(request, summonnerName):
         return Response(status=status.HTTP_400_BAD_REQUEST)
     
     queryResult = BehaviorADC.objects.filter(summonnerName__exact=summonnerName)
-    
-    data : list = list()
+    serializer = BehaviorADCSerializer(queryResult,  context={"request": request}, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def get_listPatch(request):
+    queryResult = BehaviorADC.objects.all()
+    patchList : list = list()
+
     for res in queryResult:
-        data.append([res.date, res.tournament, res.matchId, res.seriesId, res.patch, res.summonnerName, res.xpd15, res.gd15, res.csMin, res.kills, res.deaths, res.assists, res.kp, res.dpm, res.jungleProximity, res.botLanePresence, res.riverBotPresence])
+        patch = res.patch.split(".")[0] + "." + res.patch.split(".")[1]
+        patchList.append(patch)
+    df = pd.DataFrame({"patch": patchList})
 
-    df = pd.DataFrame(data=data, columns=BEHAVIOR_ADC_HEADER)
-    print(df)
+    return Response(df["patch"].unique())
 
-    return Response(df)
+@api_view(['GET'])
+def behaviorADC_stats_latest(request, summonnerName, limit, tournament):
+    summonnerNameList : list = list()
+    allObjects = BehaviorADC.objects.all()
+    for res in allObjects:
+        summonnerNameList.append(res.summonnerName)
+
+    df = pd.DataFrame({"summonnerName": summonnerNameList})
+
+
+    if not(summonnerName in df["summonnerName"].unique().tolist()) :
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+    
+    queryResult = BehaviorADC.objects.filter(summonnerName__exact=summonnerName, tournament__exact=tournament).all()[:int(limit)]
+    serializer = BehaviorADCSerializer(queryResult,  context={"request": request}, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def behaviorADC_stats_patch(request, summonnerName, patch, tournament):
+    #Getting all of the unique patches
+    queryListPatch = BehaviorADC.objects.all()
+    patchList : list = list()
+
+    for res in queryListPatch:
+        tempPatch = res.patch.split(".")[0] + "." + res.patch.split(".")[1]
+        patchList.append(tempPatch)
+    dfPatch = pd.DataFrame({"patch": patchList})
+    dfPatchUnique = dfPatch["patch"].unique()
+
+    if not(patch in dfPatchUnique.tolist()):
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+    
+    queryResult = BehaviorADC.objects.filter(summonnerName__exact=summonnerName, patch__contains=patch, tournament__exact=tournament)
+    serializer = BehaviorADCSerializer(queryResult, context={"request": request}, many=True)
+    return Response(serializer.data)
+
+
+

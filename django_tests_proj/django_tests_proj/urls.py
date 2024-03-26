@@ -20,10 +20,11 @@ from data_analysis import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    re_path(r'^api/behavior/ADC/([0-9]*)$', views.behaviorADC_list),
-    re_path(r'^api/behavior/ADC/patch/([0-9]*)\.([0-9]*)$', views.behaviorADC_patch),
-    re_path(r'^api/behavior/ADC/patch/getList', views.get_listPatch),
     re_path(r'^api/behavior/ADC/latest/([0-9]*)$', views.behaviorADC_latest),
+
+    re_path(r'^api/behavior/ADC/patch/getList', views.get_listPatch),
     re_path(r'^api/behavior/ADC/patch/update', views.behaviorADC_updatePatch),
-    path('api/behavior/ADC/stats/<str:summonnerName>', views.behaviorADC_stats)
+    path('api/behavior/ADC/stats/<str:summonnerName>', views.behaviorADC_stats),
+    path('api/behavior/ADC/stats/latest/<str:summonnerName>/<int:limit>/<str:tournament>', views.behaviorADC_stats_latest),
+    path('api/behavior/ADC/stats/patch/<str:summonnerName>/<str:patch>/<str:tournament>', views.behaviorADC_stats_patch),
 ]
