@@ -24,6 +24,7 @@ class BehaviorADC(models.Model):
     tournament = models.CharField("Tournament", max_length=240)
     matchId = models.CharField("MatchId", max_length=240)
     seriesId = models.IntegerField("SeriesId")
+    patch = models.CharField("Patch", max_length=240)
     summonnerName = models.CharField("SummonnerName", max_length=240)
     xpd15 = models.IntegerField("XPD@15")
     gd15 = models.IntegerField("GD@15")
@@ -38,4 +39,4 @@ class BehaviorADC(models.Model):
     riverBotPresence = models.FloatField("riverBotPresence")
     
     def __str__(self) -> str:
-        return self.summonnerName
+        return "(" + self.date + ", " + self.tournament + ", " + self.matchId + ", " + str(self.seriesId) + ", " + self.patch + ", " + self.summonnerName + ")"

@@ -1,5 +1,4 @@
 import pandas as pd
-from django.contrib.auth.models import User
 from data_analysis.models import BehaviorADC
 
 csv_file_path = "./data_analysis/data/behavior_ADC.csv"

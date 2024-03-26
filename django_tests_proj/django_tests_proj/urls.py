@@ -20,5 +20,9 @@ from data_analysis import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    re_path(r'^api/behavior/ADC/$', views.behaviorADC_list)
+    re_path(r'^api/behavior/ADC/([0-9]*)$', views.behaviorADC_list),
+    re_path(r'^api/behavior/ADC/patch/([0-9]*)\.([0-9]*)$', views.behaviorADC_patch),
+    re_path(r'^api/behavior/ADC/patch/getList', views.get_listPatch),
+    re_path(r'^api/behavior/ADC/latest/([0-9]*)$', views.behaviorADC_latest),
+    re_path(r'^api/behavior/ADC/patch/update', views.behaviorADC_updatePatch),
 ]

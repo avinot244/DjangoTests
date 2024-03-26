@@ -5,4 +5,4 @@ class BehaviorADCSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = BehaviorADC
-        fields = ("pk", "date", "tournament", "matchId", "seriesId", "summonnerName", "xpd15", "gd15", "csMin", "kills", "deaths", "assists", "kp", "dpm", "jungleProximity", "botLanePresence", "riverBotPresence")
+        fields = ("pk", "date", "tournament", "matchId", "seriesId", "patch", "summonnerName", "xpd15", "gd15", "csMin", "kills", "deaths", "assists", "kp", "dpm", "jungleProximity", "botLanePresence", "riverBotPresence")
